@@ -18,7 +18,8 @@
 define([
     "dojo","dojo/_base/declare",
     "ebg/core/gamegui",
-    "ebg/counter"
+    "ebg/counter",
+    "ebg/stock"
 ],
 function (dojo, declare) {
     return declare("bgagame.mintworksbg", ebg.core.gamegui, {
@@ -28,7 +29,9 @@ function (dojo, declare) {
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
-
+            console.log('mintworks constructor');
+            this.cardwidth = 154;
+            this.cardheight = 253;
         },
         
         /*
@@ -57,7 +60,43 @@ function (dojo, declare) {
             }
             
             // TODO: Set up your game interface here, according to "gamedatas"
-            
+            // Player hand
+            this.playerHand = new ebg.stock(); // new stock object for hand
+            this.playerHand.create( this, $('myhand'), this.cardwidth, this.cardheight );
+            this.playerHand.image_items_per_row = 13; // 13 images per row
+
+            this.planSupply = new ebg.stock();
+            this.planSupply.create( this, $('plans'), this.cardwidth, this.cardheight );
+            this.planSupply.image_items_per_row = 13; // 13 images per row
+
+            // Create cards types:
+            for (var row = 0; row < 2; row++) {
+                for (var col = 0; col < 13; col++) {
+                    // Build card type id
+                    var card_type_id = this.getCardUniqueId(row, col);
+                    this.playerHand.addItemType(card_type_id, card_type_id, g_gamethemeurl + 'img/vertical_cards.jpeg', card_type_id);
+                    this.planSupply.addItemType(card_type_id, card_type_id, g_gamethemeurl + 'img/vertical_cards.jpeg', card_type_id);
+                }
+            }
+
+            // Cards in player's hand
+            for ( var i in this.gamedatas.hand) {
+                var card = this.gamedatas.hand[i];
+                var row = card.type;
+                var col = card.type_arg;
+                this.playerHand.addToStockWithId(this.getCardUniqueId(row, col), card.id);
+            }
+
+            // Cards in Supply
+            for (i in this.gamedatas.plan_supply) {
+                var card = this.gamedatas.plan_supply[i];
+                var row = card.type;
+                var col = card.type_arg;
+                this.planSupply.addToStockWithId(this.getCardUniqueId(row, col), card.id);
+            }
+            console.log(this.gamedatas.plan_supply);
+
+            dojo.connect( this.playerHand, 'onChangeSelection', this, 'onPlayerHandSelectionChanged' );
  
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
@@ -157,6 +196,10 @@ function (dojo, declare) {
             script.
         
         */
+        // Get card unique identifier based on its row and col
+        getCardUniqueId : function(row, col) {
+            return parseInt(row, 10) * 13 + parseInt(col, 10);
+        },
 
 
         ///////////////////////////////////////////////////
@@ -172,6 +215,25 @@ function (dojo, declare) {
             _ make a call to the game server
         
         */
+
+        onPlayerHandSelectionChanged : function() {
+            var items = this.playerHand.getSelectedItems();
+
+            if (items.length > 0) {
+                if (this.checkAction('playCard', true)) {
+                    // Can play a card
+
+                    var card_id = items[0].id;
+                    console.log("on playCard "+card_id);
+
+                    this.playerHand.unselectAll();
+                } else if (this.checkAction('giveCards')) {
+                    // Can give cards => let the player select some cards
+                } else {
+                    this.playerHand.unselectAll();
+                }
+            }
+        },
         
         /* Example:
         

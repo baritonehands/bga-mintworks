@@ -32,6 +32,38 @@ $this->card_types = array(
 
 */
 
+$this->vertical_card_names = array(
+    'co-op' => 'production',
+    'corp-hq' => 'production',
+    'stripmine' => 'production',
+    'plant' => 'production',
+    'truck' => 'utility',
+    'landfill' => 'utility',
+    'obelisk' => 'utility',
+    'vault' => 'utility',
+    'windmill' => 'culture',
+    'museum' => 'culture',
+    'gallery' => 'culture',
+    'rachel' => 'ai',
+    'sonic' => 'ai',
+    'mint-works' => 'back',
+    'mine' => 'production',
+    'workshop' => 'production',
+    'factory' => 'production',
+    'wholesaler' => 'deed',
+    'crane' => 'utility',
+    'lotto' => 'deed',
+    'assembler' => 'utility',
+    'bridge' => 'culture',
+    'statue' => 'culture',
+    'gardens' => 'culture',
+    'justin' => 'ai',
+    'mort' => 'ai',
+);
 
-
-
+$this->plan_card_desc = array();
+foreach ($this->vertical_card_names as $name => $type) {
+    $this->plan_card_desc[$name] = array('name' => clienttranslate($name),
+                                        'nametr' => self::_($name),
+                                        'type' => $type);
+}

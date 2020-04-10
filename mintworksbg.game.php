@@ -31,15 +31,14 @@ class MintWorksBG extends Table
         //  the corresponding ID in gameoptions.inc.php.
         // Note: afterwards, you can get/set the global variables with getGameStateValue/setGameStateInitialValue/setGameStateValue
         parent::__construct();
-        
         self::initGameStateLabels( array( 
-            //    "my_first_global_variable" => 10,
-            //    "my_second_global_variable" => 11,
-            //      ...
-            //    "my_first_game_variant" => 100,
-            //    "my_second_game_variant" => 101,
-            //      ...
-        ) );        
+                        //  "currentHandType" => 10, 
+                        //  "trickColor" => 11, 
+                        //  "alreadyPlayedHearts" => 12,
+                          ) );
+
+        $this->plan_cards = self::getNew( "module.common.deck" );
+        $this->plan_cards->init( "plan_card" );      
 	}
 	
     protected function getGameName( )
@@ -87,8 +86,20 @@ class MintWorksBG extends Table
         //self::initStat( 'table', 'table_teststat1', 0 );    // Init a table statistics
         //self::initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
 
-        // TODO: setup the initial game situation here
-       
+        // Create cards
+        $plan_cards = array ();
+        $index = 0;
+        foreach ( $this->plan_card_desc as $name => $value ) {
+            if( !in_array($value['type'], array('ai', 'back')) ) 
+                $plan_cards [] = array ('type' => intdiv($index, 13),'type_arg' => $index % 13,'nbr' => 1 );
+            $index++;
+        }
+        
+        $this->plan_cards->createCards( $plan_cards, 'deck' );
+
+        // Shuffle deck
+        $this->plan_cards->shuffle('deck');
+        $plan_cards = $this->plan_cards->pickCardsForLocation(3, 'deck', 'plan_supply');
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -115,9 +126,13 @@ class MintWorksBG extends Table
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
         $sql = "SELECT player_id id, player_score score FROM player ";
         $result['players'] = self::getCollectionFromDb( $sql );
-  
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
-  
+
+        // Cards in player hand
+        $result['hand'] = $this->plan_cards->getCardsInLocation( 'hand', $current_player_id );
+        
+        // Cards in the Plan Supply
+        $result['plan_supply'] = $this->plan_cards->getCardsInLocation( 'plan_supply' );
+
         return $result;
     }
 

@@ -48,18 +48,21 @@
 
 /********* You can start writing your CSS below this line: **********/
 
-.plancard {
+.stockitem {
+    border: 1px solid #666666;
+    background-size: 2006px 507.5px;
+}
+
+.plancard-back {
     border: 1px solid #666666;
     display: inline-block;
     position: relative;
     margin-top: 5px;
-    width: 220px;
-    height: 362px;
-    background-image: url('img/vertical_cards.jpeg'); /* temp hack to see it */
-}
-
-.plancard-back {
-    background-position-y: 362px;
+    width: 154px;
+    height: 253px;
+    background-position-y: 253px;
+    background-size: 2006px 507.5px;
+    background-image: url('img/vertical_cards.jpeg');
 }
 
 .locationcard {

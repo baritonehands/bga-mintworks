@@ -27,8 +27,10 @@
 
 <div id="plan_supply_wrap" class="whiteblock">
     <h3>Plan Supply</h3>
-    <div id="plans">
-        <div class="plancard plancard-back"></div>
+    <div class="plans-container">
+        <div class="plancard-back"></div>
+        <div id="plans">
+        </div>
     </div>
 </div>
 
@@ -42,7 +44,6 @@
 <div id="myhand_wrap" class="whiteblock">
     <h3>My Hand</h3>
     <div id="myhand">
-        <div class="plancard"></div>
     </div>
 </div>
 
