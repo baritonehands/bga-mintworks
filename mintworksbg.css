@@ -48,6 +48,29 @@
 
 /********* You can start writing your CSS below this line: **********/
 
+.plancard {
+    border: 1px solid #666666;
+    display: inline-block;
+    position: relative;
+    margin-top: 5px;
+    width: 220px;
+    height: 362px;
+    background-image: url('img/vertical_cards.jpeg'); /* temp hack to see it */
+}
+
+.plancard-back {
+    background-position-y: 362px;
+}
+
+.locationcard {
+    border: 1px solid #666666;
+    display: inline-block;
+    position: relative;
+    margin-top: 5px;
+    width: 363px;
+    height: 220px;
+    background-image: url('img/horizontal_cards.jpeg'); /* temp hack to see it */
+}
 
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):

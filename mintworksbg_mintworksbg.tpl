@@ -25,8 +25,26 @@
     Please REMOVE this comment before publishing your game on BGA
 -->
 
+<div id="plan_supply_wrap" class="whiteblock">
+    <h3>Plan Supply</h3>
+    <div id="plans">
+        <div class="plancard plancard-back"></div>
+    </div>
+</div>
 
-This is your game interface. You can edit this HTML in your ".tpl" file.
+<div id="location_wrap" class="whiteblock">
+    <h3>Locations</h3>
+    <div id="locations">
+        <div class="locationcard"></div>
+    </div>
+</div>
+
+<div id="myhand_wrap" class="whiteblock">
+    <h3>My Hand</h3>
+    <div id="myhand">
+        <div class="plancard"></div>
+    </div>
+</div>
 
 
 <script type="text/javascript">
